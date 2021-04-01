@@ -1,0 +1,7 @@
+/build/*
+
+/install/*
+
+/.idea/
+/.vscode/
+.DS_Store
