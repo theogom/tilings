@@ -1,77 +1,66 @@
-#include "../src/tile.h"
-#include "../src/file.h"
-#include "../src/player.h"
-#include "../src/free.h"
+#include "tile.h"
+#include "file.h"
+#include "player.h"
+#include "free.h"
+#include "tests.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-//TESTED FUNCTIONS/////////////////////////////////////////
-/*
-void players_init();
-
-void deck_init(struct deck *d);
-
-void shuffle(struct deck *d, const struct tile *set[], int tile_remaining);
-
-void split_deck(struct deck *d);
-*/
-///////////////////////////////////////////////////////////
 
 extern int nb_player;
 extern int nb_tile;
 
-void player_test()
-{
-	// Check if all the players enter the file correctly
-	printf("TEST: Players list initialization...");
-	struct file *test_players = players_init();
-	
-	if (number_of_element_file(test_players) != nb_player)
-	{
-		free_file(test_players);
-		printf("\e[31mFAILED\n");
-		fprintf(stderr, "ERROR: Players list initialization failed\e[m\n");
-		exit(EXIT_FAILURE);
-	}
-	printf("\e[32mSUCCEED\e[m\n");
+struct file* players;
+struct deck* deck;
 
-	// Check if the deck is the correct size after initialization
-	printf("TEST: Deck initialization...");
-	struct deck test_deck;
-	deck_init(&test_deck);
-	if (number_of_tile_deck(&test_deck) != nb_tile)
-	{
-		free_file(test_players);
-		printf("\e[31mFAILED\n");
-		fprintf(stderr, "ERROR: Deck initialisation failed\e[m\n");
-		exit(EXIT_FAILURE);
-	}
-	printf("\e[32mSUCCEED\e[m\n");
-
-	// Check if each player has received the correct number of tiles after distribution
-	printf("TEST: Tiles distribution...");
-	split_deck(test_players, &test_deck);
-	int nb_tile_to_give = nb_tile - nb_tile % nb_player;
-	struct element *actual_element = top(test_players);
-	const struct player *actual_player = player_from_element(actual_element);
-	while (actual_element != NULL)
-	{
-		if (number_of_element_file(get_stack(actual_player)) != nb_tile_to_give / nb_player)
-		{
-			free_file(test_players);
-			printf("\e[31mFAILED\n");
-			fprintf(stderr, "ERROR: Tiles distribution failed\e[m\n");
-			exit(EXIT_FAILURE);
-		}
-		actual_element = get_next_element(actual_element);
-	}
-	free_file(test_players);
-	printf("\e[32mSUCCEED\e[m\n");
+static void setup(void) {
+    players = players_init();
+    deck = malloc(sizeof(*deck));
+    deck_init(deck);
 }
 
-int main(void)
-{
-	printf("\nPerforming players tests...\n");
-	player_test();
-	return EXIT_SUCCESS;
+static void teardown(void) {
+    free_file(players);
+    free(deck);
+}
+
+// Check if all the players enter the file correctly
+void test_players_init(void) {
+    printf("%s", __func__);
+
+    if (number_of_element_file(players) != nb_player)
+        FAIL("Players list initialization failed");
+}
+
+// Check if the deck is the correct size after initialization
+void test_deck_init(void) {
+    printf("%s", __func__);
+
+    if (number_of_tile_deck(deck) != nb_tile)
+        FAIL("Deck initialisation failed");
+}
+
+// Check if each player has received the correct number of tiles after distribution
+void test_distribution(void) {
+    printf("%s", __func__);
+
+    split_deck(players, deck);
+    int nb_tile_to_give = nb_tile - nb_tile % nb_player;
+    struct element* current_element = top(players);
+    const struct player* current_player = player_from_element(current_element);
+
+    while (current_element != NULL) {
+        if (number_of_element_file(get_stack(current_player)) != nb_tile_to_give / nb_player)
+            FAIL("Tiles distribution failed");
+        current_element = get_next_element(current_element);
+    }
+}
+
+int test_player_main(void) {
+    TEST(test_players_init);
+    TEST(test_deck_init);
+    TEST(test_distribution);
+
+    SUMMARY();
+
+    return EXIT_SUCCESS;
 }

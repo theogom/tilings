@@ -1,79 +1,83 @@
-#include "../src/file.h"
-#include "../src/free.h"
+#include "tests.h"
+#include "file.h"
+#include "free.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-//TESTED FUNCTIONS/////////////////////////////////////////
-/*
-void push(struct file* f, struct tile* t);
+// Test variables
+struct file *empty_file;
+struct file *test_file;
+struct element *e1;
+struct element *e2;
+struct element *e3;
 
-struct tile* top(struct file* f);
-
-void pop(struct file* f);
-
-struct file* file_init();
-*/
-///////////////////////////////////////////////////////////
-
-//Perform all the file test
-void file_test()
-{
-	//Test the file initialization
-	printf("TEST: File initialization\n");
-	struct file *test_file = file_init();
-	if (number_of_element_file(test_file) != 0)
-	{
-		free_file(test_file);
-		printf("\e[31mFAILED\n");
-		fprintf(stderr, "ERROR: File initialization failed\n");
-		exit(EXIT_FAILURE);
-	}
-
-	//Test pushing elements into the file
-	printf("TEST: Pushing 3 tiles into the file...");
-	struct element *e1 = create_element();
-	struct element *e2 = create_element();
-	struct element *e3 = create_element();
-	push(test_file, e1);
-	push(test_file, e2);
-	push(test_file, e3);
-	if (number_of_element_file(test_file) != 3)
-	{
-		free_file(test_file);
-		printf("\e[31mFAILED\n");
-		fprintf(stderr, "ERROR: Pushing elements failed\e[m\n");
-		exit(EXIT_FAILURE);
-	}
-	printf("\e[32mSUCCEED\e[m\n");
-
-	//Test getting the top element
-	printf("TEST: Getting the top element...");
-	if (top(test_file) != e1)
-	{
-		free_file(test_file);
-		printf("\e[31mFAILED\n");
-		fprintf(stderr, "ERROR: Unable to get top element\e[m\n");
-		exit(EXIT_FAILURE);
-	}
-	printf("\e[32mSUCCEED\e[m\n");
-
-	//Test popping the top tile
-	printf("TEST: Popping the top tile...");
-	pop(test_file);
-	if (number_of_element_file(test_file) != 2 || top(test_file) != e2)
-	{
-		free_file(test_file);
-		printf("\e[31mFAILED\n");
-		fprintf(stderr, "ERROR: Popping element failed\e[m\n");
-		exit(EXIT_FAILURE);
-	}
-	free_file(test_file);
-	printf("\e[32mSUCCEED\e[m\n");
+// Set up empty and non-empty files
+static void setup(void) {
+    empty_file = file_init();
+    test_file = file_init();
+    e1 = create_element();
+    e2 = create_element();
+    e3 = create_element();
+    push(test_file, e1);
+    push(test_file, e2);
+    push(test_file, e3);
 }
 
-int main(void)
-{
-	printf("\nPerforming file tests...\n");
-	file_test();
-	return EXIT_SUCCESS;
+static void teardown(void) {
+    free_file(empty_file);
+    free_file(test_file);
+}
+
+// Test the file initialization
+void test_init(void) {
+    printf("%s", __func__);
+
+    struct file* file = file_init();
+
+    if (number_of_element_file(file) != 0)
+        FAIL("File initialization failed");
+
+    free_file(file);
+}
+
+// Test pushing elements into the file
+void test_push(void) {
+    printf("%s", __func__);
+
+    struct element *e4 = create_element();
+    struct element *e5 = create_element();
+    struct element *e6 = create_element();
+    push(empty_file, e4);
+    push(empty_file, e5);
+    push(empty_file, e6);
+
+    if (number_of_element_file(empty_file) != 3)
+        FAIL("Pushing elements failed");
+}
+
+void test_top(void) {
+    printf("%s", __func__);
+
+    if (top(test_file) != e1)
+        FAIL("Getting top element failed");
+}
+
+void test_pop(void) {
+    printf("%s", __func__);
+
+    pop(test_file);
+
+    if (number_of_element_file(test_file) != 2 || top(test_file) != e2)
+        FAIL("Popping element failed");
+}
+
+int test_file_main(void) {
+    TEST(test_init);
+    TEST(test_push);
+    TEST(test_top);
+    TEST(test_pop);
+
+    SUMMARY();
+
+    return EXIT_SUCCESS;
 }
