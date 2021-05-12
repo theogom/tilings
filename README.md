@@ -1,14 +1,16 @@
-# SYNOPSIS
+# Tilings
 
-`./project [-s seed] [-b board_size] [-n number_of_players]`
+## Usage
+
+`./bin/tilings [-s seed] [-b board_size] [-n number_of_players]`
 
 
-# DESCRIPTION
+## Description
 
 Ce programme simule une partie de jeu de pavage à l'aide de tuiles de Wang, puis affiche le tableau des scores ainsi que le plateau en fin de partie.
 
 
-# OPTIONS
+## Options
 
 * -s : modifie la graine pour le générateur aléatoire (valeur par défaut : 11098)
 
@@ -17,25 +19,21 @@ Ce programme simule une partie de jeu de pavage à l'aide de tuiles de Wang, pui
 * -n : définie le nombre de joueurs (valeur par défaut : 3)
 
 
-# COMPILATION
+## Compilation
 
-Chaque dossier achiev[0-2]/ contient les différents fichiers sources et tests nécessaires à chaque achievement. En outre chaque dossier contient un fichier Makefile permettant de réaliser les différentes opérations de compilation.
+Le dossier contient un fichier Makefile permettant de réaliser les différentes opérations de compilation.
 Les options disponibles sont les suivantes :
 
-* `make project` : création de l'exécutable principal à partir des différents fichiers .c dans achiev?/src
+* `make` : compilation des différents fichiers sources .c
 
-* `make test` : création des exécutables de test à partir des fichiers .c dans achiev?/src et achiev?/tst, et lancement des tests
+* `make install` : installation des différents exécutables dans le dossier `bin`
+
+* `make test` : création des exécutables de test à partir des fichiers .c dans src et tst, et lancement des tests
 
 * `make clean` : suppression des fichiers objets .o, des fichiers de dépendances .d, ainsi que des exécutables
 
 
-# LIENS UTILES
+## Lien utiles
 
 * Lien vers le sujet du projet :
 <https://www.labri.fr/perso/renault/working/teaching/projets/2020-21-S5-Tilings.php>
-
-* Lien vers le projet sur la forge :
-<https://thor.enseirb-matmeca.fr/ruby/projects/projetss5>
-
-* Lien vers la documentation sur l'utilisation de git :
-<https://thor.enseirb-matmeca.fr/ruby/docs/repository/git>
