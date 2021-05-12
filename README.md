@@ -24,9 +24,11 @@ Ce programme simule une partie de jeu de pavage à l'aide de tuiles de Wang, pui
 Le dossier contient un fichier Makefile permettant de réaliser les différentes opérations de compilation.
 Les options disponibles sont les suivantes :
 
-* `make` : compilation des différents fichiers sources .c
+* `make` : compilation des différents fichiers sources .c dans src
 
 * `make install` : installation des différents exécutables dans le dossier `bin`
+
+* `make game` : lancement d'une partie avec les paramètres par défaut
 
 * `make test` : création des exécutables de test à partir des fichiers .c dans src et tst, et lancement des tests
 

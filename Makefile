@@ -35,7 +35,7 @@ all: $(CMPDIR)/$(MAIN)
 
 # SCRIPTS
 
-game: $(EXECDIR)/$(MAIN)
+game: install
 	$(EXECDIR)/$(MAIN)
 
 .PHONY: test
