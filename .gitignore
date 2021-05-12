@@ -1,7 +1,11 @@
-/build/*
+# Build directories
+/build/
+/install/
+/deps/
 
-/install/*
-
+# Editor files
 /.idea/
 /.vscode/
+
+# Others
 .DS_Store

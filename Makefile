@@ -1,6 +1,7 @@
 # Directories
 SRCDIR = src
-OBJDIR = build
+CMPDIR = build
+EXECDIR = bin
 DEPDIR = deps
 TSTDIR = tst
 
@@ -10,58 +11,72 @@ RED=\033[31m
 GREEN=\033[32m
 YELLOW=\033[33m
 
-# Get all source files excepted project.c (Excluded to avoid duplicate symbol _main when compiling tests)
-MAIN = project
-SRC = $(filter-out $(SRCDIR)/$(MAIN).c, $(wildcard $(SRCDIR)/*.c))
+# Get all source files excepted main.c (Excluded to avoid duplicate symbol main when compiling tests)
+MAIN = tilings
+MAINTST = alltests
+SRC = $(filter-out $(SRCDIR)/main.c, $(wildcard $(SRCDIR)/*.c))
 SRCTST = $(wildcard $(TSTDIR)/*.c)
 
 # Naming of object and dependency files according to source files
-OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-OBJTST = $(SRCTST:$(TSTDIR)/%.c=$(OBJDIR)/%.o)
-DEPFILES = $(OBJ:$(OBJDIR)/%.o=$(DEPDIR)/%.d) $(OBJTST:$(OBJDIR)/%.o=$(DEPDIR)/%.d) $(DEPDIR)/$(MAIN).d
+OBJ = $(SRC:$(SRCDIR)/%.c=$(CMPDIR)/%.o)
+OBJTST = $(SRCTST:$(TSTDIR)/%.c=$(CMPDIR)/%.o)
+DEPFILES = $(OBJ:$(CMPDIR)/%.o=$(DEPDIR)/%.d) $(OBJTST:$(CMPDIR)/%.o=$(DEPDIR)/%.d) $(DEPDIR)/main.d
 
-# Get the number of tests available in the TESTDIR directory
+# Get the number of tests available in the TSTDIR directory
 NBTST= $$(($(shell ls $(TSTDIR) | wc -l)))
 
 # Compilation flags
 CC = gcc
-CFLAGS = -Wall -Wextra -std=gnu99
+CFLAGS = -Wall -Wextra -std=gnu99 -I src
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
 
 
-all: $(MAIN)
+all: $(CMPDIR)/$(MAIN)
+
+# SCRIPTS
+
+game: $(EXECDIR)/$(MAIN)
+	$(EXECDIR)/$(MAIN)
+
+.PHONY: test
+test: $(EXECDIR)/$(MAINTST)
+	$(EXECDIR)/$(MAINTST)
+
+.PHONY: install
+install: $(CMPDIR)/$(MAIN) $(CMPDIR)/$(MAINTST) | $(EXECDIR)
+	@for file in $^; do cp $$file $(EXECDIR); done
+	@printf "$(GREEN)Project installed in $(EXECDIR)$(RESET)\n"
 
 # Make project with all object files
-$(MAIN): $(OBJ) $(OBJDIR)/$(MAIN).o
+$(CMPDIR)/$(MAIN): $(OBJ) $(CMPDIR)/main.o
 	@printf "$(GREEN)Build success$(RESET)\n"
 	@echo "Linking objects..."
 	@$(CC) $(CFLAGS) $^ -o $@
 	@printf "$(GREEN)Successfully making project$(RESET)\n"
 
-# Make tests
-# Phony target in order to run the tests even if there is already an file named test in the directory
-.PHONY: test
-test: $(OBJ) $(OBJTST)
-	@for tst in $(OBJTST); do \
-	$(CC) $(CFLAGS) $(OBJ) $$tst -o test && ./test && SUCCESS=$$(($$SUCCESS + 1)); done; \
-	printf "\nSUMMARY: $(NBTST) tests ran, $$SUCCESS $(GREEN)passed$(RESET), $$(($(NBTST) - $$SUCCESS)) $(RED)failed$(RESET)\n"
+$(CMPDIR)/$(MAINTST): $(OBJ) $(OBJTST) | $(CMPDIR)
+	@$(CC) $^ -o $@
 
 # Build object files
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPDIR)/%.d | $(OBJDIR) $(DEPDIR)
-	@printf "Building $(YELLOW)$(@:$(OBJDIR)/%.o=%.o)$(RESET)...\n"
+$(CMPDIR)/%.o: $(SRCDIR)/%.c $(DEPDIR)/%.d | $(CMPDIR) $(DEPDIR)
+	@printf "Building $(YELLOW)$(@:$(CMPDIR)/%.o=%.o)$(RESET)...\n"
 	@$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
 
 # Build test object files
-$(OBJDIR)/%.o: $(TSTDIR)/%.c $(DEPDIR)/%.d | $(OBJDIR) $(DEPDIR)
-	@printf "Building $(YELLOW)$(@:$(OBJDIR)/%.o=%.o)$(RESET)...\n"
+$(CMPDIR)/%.o: $(TSTDIR)/%.c $(DEPDIR)/%.d | $(CMPDIR) $(DEPDIR)
+	@printf "Building $(YELLOW)$(@:$(CMPDIR)/%.o=%.o)$(RESET)...\n"
 	@$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
 
 # Create directory for object files
-$(OBJDIR):
+$(CMPDIR):
 	@echo "Creating build directory..."
 	@mkdir -p $@
 
-# Create directory for dependancies
+$(EXECDIR):
+	@echo "Creating install directory..."
+	@mkdir -p $@
+
+# Create directory for dependencies
 $(DEPDIR):
 	@echo "Creating dependency directory..."
 	@mkdir -p $@
