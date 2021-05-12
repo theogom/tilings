@@ -13,7 +13,7 @@ int board_size = 10;
 // -s <seed> : sets the seed
 // -b <board size> : sets the board size
 // -n <number of players> : sets the number of players
-int parse_opts(int argc, char *argv[])
+int parse_opts(int argc, char* argv[])
 {
     int opt;
     while ((opt = getopt(argc, argv, "s:b:n:")) != -1)

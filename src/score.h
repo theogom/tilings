@@ -4,8 +4,6 @@
 #include "board.h"
 #include "opt.h"
 #include "player.h"
-#include <string.h>
-#include <stdio.h>
 
 extern int (*patterns[]) (int, int);
 
@@ -40,11 +38,12 @@ void fill_2D_int(int n, int len1, int len2, int array[][len2]);
 int color_index(const char *color);
 
 // Set all pointer in color_list to NULL
-void reset_color_list();
+void reset_color_list(void);
 
 // Insert a color in color_list
 void insert_color(const char *color);
 
 // Construct list of colors on the board
-void list_colors();
+void list_colors(void);
+
 #endif // _SCORE_H_

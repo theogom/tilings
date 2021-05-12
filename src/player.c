@@ -4,7 +4,7 @@
 
 struct player
 {
-    struct file *stack;
+    struct file* stack;
     int id;
 };
 
@@ -15,7 +15,7 @@ int randint(int low, int high)
 }
 
 // Get the total amount of tiles in a deck
-int number_of_tile_deck(struct deck *d)
+int number_of_tile_deck(struct deck* d)
 {
     int count_tile = 0;
     // Sum the amount of tile in each card
@@ -27,22 +27,22 @@ int number_of_tile_deck(struct deck *d)
 }
 
 // A function that fills a file with players
-struct file *players_init(void)
+struct file* players_init(void)
 {
     // Initialize the players' list
-    struct file *players = file_init();
+    struct file* players = file_init();
 
     // Initialize players with an empty stack
     for (int i = 0; i < nb_player; i++)
     {
         // Initialize the stack
-        struct file *f = file_init();
+        struct file* f = file_init();
         // Initialize the player
-        struct player *p = malloc(sizeof(struct player));
+        struct player* p = malloc(sizeof(struct player));
         p->stack = f;
         p->id = i;
         // Initialize the element
-        struct element *player_to_push = create_element();
+        struct element* player_to_push = create_element();
         set_data(player_to_push, p);
         // Push the player into the file
         push(players, player_to_push);
@@ -51,7 +51,7 @@ struct file *players_init(void)
 }
 
 // Shuffle a deck of tile
-void shuffle(struct deck *d, const struct tile *set[], int tile_remaining)
+void shuffle(struct deck* d, const struct tile* set[], int tile_remaining)
 {
     int counter;
     int card_index;
@@ -74,7 +74,7 @@ void shuffle(struct deck *d, const struct tile *set[], int tile_remaining)
 }
 
 // Distribute the tiles in the original deck equitably between the players
-void split_deck(struct file *players_file, struct deck *d)
+void split_deck(struct file* players_file, struct deck* d)
 {
     // Find the number of tiles to distribute to each players
     int nb_tile = number_of_tile_deck(d);
@@ -87,18 +87,18 @@ void split_deck(struct file *players_file, struct deck *d)
     }
 
     // Shuffle the tiles and put them in a set of tile
-    const struct tile *set[nb_tile_to_give];
+    const struct tile* set[nb_tile_to_give];
     shuffle(d, set, nb_tile_to_give);
 
     // Distribution
-    struct element *actual_element = top(players_file);
+    struct element* actual_element = top(players_file);
     int index = 0;
     while (index < nb_tile_to_give)
     {
-        struct element *tile_to_push = create_element();
+        struct element* tile_to_push = create_element();
         set_data(tile_to_push, set[index++]);
         // Push the tile into the player stack
-        const struct player *actual_player = player_from_element(actual_element);
+        const struct player* actual_player = player_from_element(actual_element);
         push(get_stack(actual_player), tile_to_push);
         if (index % (nb_tile_to_give / nb_player) == 0)
         {
@@ -108,34 +108,34 @@ void split_deck(struct file *players_file, struct deck *d)
 }
 
 // Get the next player in the game loop and add it at the end of the file
-const struct player *get_next_player(struct file *players_file)
+const struct player* get_next_player(struct file* players_file)
 {
-    struct element *actual_player = top(players_file);
+    struct element* actual_player = top(players_file);
     pop(players_file);
     push(players_file, actual_player);
     return player_from_element(actual_player);
 }
 
 // Get player's stack of tiles
-struct file *get_stack(const struct player *p)
+struct file* get_stack(const struct player* p)
 {
     return p->stack;
 }
 
 // Get player's unique identifier
-int get_id(const struct player *p)
+int get_id(const struct player* p)
 {
     return p->id;
 }
 
 // Return the player stored in the element
-const struct player *player_from_element(struct element *e)
+const struct player* player_from_element(struct element* e)
 {
     return get_element_data(e);
 }
 
 // Return the tile stored in the element
-const struct tile *tile_from_element(struct element *e)
+const struct tile* tile_from_element(struct element* e)
 {
     return get_element_data(e);
 }

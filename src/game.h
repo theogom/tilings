@@ -13,6 +13,6 @@ extern int free_e;
 void display_results(void);
 
 // Do a complete game
-void game(int argc, char *argv[]);
+void game(int argc, char* argv[]);
 
 #endif // __GAME_H_

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 // Global game variables
-struct file *players;
+struct file* players;
 int scores[MAX_NB_PLAYER];
 
 // Display the results by counting the number of tiles remaining for each players
@@ -13,9 +13,9 @@ void display_results(void)
     int max_score = 0; // Score of the current winner(s)
     int nb_winner = 0;
     int winners[nb_player]; // Array with the index of the winners
-    const struct player *player = NULL;
+    const struct player* player = NULL;
     int player_id;
-    struct element *actual_element = top(players);
+    struct element* actual_element = top(players);
     // Iterate through the file of players
     while (actual_element != NULL)
     {
@@ -62,7 +62,7 @@ void display_results(void)
 }
 
 // Do a complete game
-void game(int argc, char *argv[])
+void game(int argc, char* argv[])
 {
     if (parse_opts(argc, argv))
     {
@@ -96,12 +96,12 @@ void game(int argc, char *argv[])
     while (nb_pass < nb_player)
     {
         // Get the top tile of the player who has to play
-        const struct player *active_player = get_next_player(players);
+        const struct player* active_player = get_next_player(players);
         int player_id = get_id(active_player);
-        struct file *player_stack = get_stack(active_player);
-        struct element *active_element = top(player_stack);
+        struct file* player_stack = get_stack(active_player);
+        struct element* active_element = top(player_stack);
         pop(player_stack);
-        const struct tile *active_tile = tile_from_element(active_element);
+        const struct tile* active_tile = tile_from_element(active_element);
         // List all the authorized places for the active tile
         (scores[player_id] == -1) ? (nb_playable_tiles = 0) : (nb_playable_tiles = list_playable_tiles(playable_tiles, active_tile, !first_tile_placed));
         // Check if the active player can play

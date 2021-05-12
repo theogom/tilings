@@ -2,7 +2,7 @@
 #include "player.h"
 
 // Free a file and its elements
-void free_file(struct file *file_to_free);
+void free_file(struct file* file_to_free);
 
 // Free all the allocated space
 // TO FREE :

@@ -17,6 +17,6 @@ extern int board_size;
 extern int nb_player;
 
 // Function for parsing the options of the program
-int parse_opts(int argc, char *argv[]);
+int parse_opts(int argc, char* argv[]);
 
 #endif // __OPT_H_
