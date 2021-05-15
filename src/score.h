@@ -1,5 +1,6 @@
 #ifndef _SCORE_H_
 #define _SCORE_H_
+
 #include "pattern.h"
 #include "board.h"
 #include "opt.h"

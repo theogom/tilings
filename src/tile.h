@@ -3,8 +3,7 @@
 
 #include "color.h"
 
-enum direction
-{
+enum direction {
     NORTH,
     SOUTH,
     EAST,
@@ -17,14 +16,12 @@ struct tile; // Anonymous struct for tiles
 
 #define MAX_DECK_SIZE 100
 
-struct deck_pair
-{
+struct deck_pair {
     const struct tile* t;
     unsigned int n;
 };
 
-struct deck
-{
+struct deck {
     struct deck_pair cards[MAX_DECK_SIZE];
     unsigned int size;
 };

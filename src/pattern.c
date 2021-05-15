@@ -19,12 +19,10 @@ int score_pattern_3 = 100;
 // |      |      |      |
 // |      |      |      |
 // |______|______|______|
-int pattern_1(int i, int j)
-{
+int pattern_1(int i, int j) {
     int valid = 0;
     valid = ((i > 0) && (j > 0) && (j < board_size - 1)) ? 1 : 0;
-    if (valid)
-    {
+    if (valid) {
         // tile i, j
         valid = (valid && check_color_dir(i, j, EAST, "RED")) ? 1 : 0;
         valid = (valid && check_color_dir(i, j, WEST, "RED")) ? 1 : 0;
@@ -52,12 +50,10 @@ int pattern_1(int i, int j)
 // |      |      |      |
 // |      |      |      |
 // |______|______|______|
-int pattern_2(int i, int j)
-{
+int pattern_2(int i, int j) {
     int valid = 0;
     valid = ((j > 0) && (j < board_size - 1)) ? 1 : 0;
-    if (valid)
-    {
+    if (valid) {
         // tile i, j
         valid = (valid && check_color_dir(i, j, EAST, "RED")) ? 1 : 0;
         valid = (valid && check_color_dir(i, j, WEST, "RED")) ? 1 : 0;
@@ -81,12 +77,10 @@ int pattern_2(int i, int j)
 // |      |      |      |
 // |      |      |      |
 // |______|______|______|
-int pattern_3(int i, int j)
-{
+int pattern_3(int i, int j) {
     int valid = 0;
     valid = ((i > 0) && (j > 0) && (j < board_size - 1)) ? 1 : 0;
-    if (valid)
-    {
+    if (valid) {
         // tile i, j
         valid = (valid && check_color_dir(i, j, EAST, "RED")) ? 1 : 0;
         valid = (valid && check_color_dir(i, j, WEST, "RED")) ? 1 : 0;
@@ -108,8 +102,7 @@ int pattern_3(int i, int j)
     return valid ? score_pattern_3 : 0;
 }
 
-void print_pattern_1()
-{
+void print_pattern_1(void) {
     const char* empty = "\e[0m";
     const char* red = "\e[41m";
     printf("\n");
@@ -125,8 +118,7 @@ void print_pattern_1()
     printf("|______|______|______|\n");
     printf("Score: %d\n", score_pattern_1);
 }
-void print_pattern_2()
-{
+void print_pattern_2(void) {
     const char* empty = "\e[0m";
     const char* red = "\e[41m";
     printf("\n");
@@ -142,8 +134,7 @@ void print_pattern_2()
     printf("|______|______|______|\n");
     printf("Score: %d\n", score_pattern_2);
 }
-void print_pattern_3()
-{
+void print_pattern_3(void) {
     const char* empty = "\e[0m";
     const char* red = "\e[41m";
     printf("\n");
@@ -161,10 +152,8 @@ void print_pattern_3()
 }
 
 
-void print_all_patterns()
-{
-    for (int p = 0; p < NB_PATTERN; ++p)
-    {
+void print_all_patterns(void) {
+    for (int p = 0; p < NB_PATTERN; ++p) {
         print_patterns[p]();
     }
 }

@@ -2,8 +2,7 @@
 #include <string.h>
 #define NB_COLOR 9
 
-enum color_num
-{
+enum color_num {
     BLACK,
     RED,
     GREEN,
@@ -15,8 +14,7 @@ enum color_num
     EMPTY
 };
 
-struct color
-{
+struct color {
     int color_value;
     char* color_name;
     char* color_ansi;
@@ -24,7 +22,6 @@ struct color
 
 
 // Current colors
-;
 struct color black = { BLACK, "BLACK", "\e[40m" };
 struct color red = { RED, "RED", "\e[41m" };
 struct color green = { GREEN, "GREEN", "\e[42m" };
@@ -48,24 +45,19 @@ struct color* colors[] = {
 };
 
 // A string giving the color name
-const char* color_name(const struct color* t)
-{
+const char* color_name(const struct color* t) {
     return t->color_name;
 }
 
 // An ANSI-colored string describing the color
-const char* color_cstring(const struct color* t)
-{
+const char* color_cstring(const struct color* t) {
     return t->color_ansi;
 }
 
 // Return a color from its name, or NULL
-struct color* color_from_name(const char* name)
-{
-    for (int c = 0; c < NB_COLOR; ++c)
-    {
-        if (!strcmp(color_name(colors[c]), name))
-        {
+struct color* color_from_name(const char* name) {
+    for (int c = 0; c < NB_COLOR; ++c) {
+        if (!strcmp(color_name(colors[c]), name)) {
             return colors[c];
         }
     }

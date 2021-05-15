@@ -9,7 +9,7 @@ extern int board_size;
 struct board; // Anonymous struct for the board
 
 // Initialise the board
-void board_init();
+void board_init(void);
 
 // Place the tile on the board
 void change_board_tile_value(int i, int j, const struct tile* tile);
@@ -48,7 +48,7 @@ int neighbor_is_valide_tile(int i, int j, int p_dir, const struct tile* p_tile);
 int nb_neighbor_valide_tile(int i, int j, const struct tile* p_tile);
 
 // Print the whole board with tiles
-void print_board();
+void print_board(void);
 
 // Count the number of places available for the tile provided
 int list_playable_tiles(int playable_tiles[][2], const struct tile* p_tile, int first);
