@@ -27,7 +27,7 @@ NBTST= $$(($(shell ls $(TSTDIR) | wc -l)))
 
 # Compilation flags
 CC = gcc
-CFLAGS = -Wall -Wextra -std=gnu99 -I src
+CFLAGS = -Wall -Wextra -std=gnu99 -I headers
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
 
 
@@ -35,12 +35,12 @@ all: $(CMPDIR)/$(MAIN)
 
 # SCRIPTS
 
-game: install
-	$(EXECDIR)/$(MAIN)
+game: $(CMPDIR)/$(MAIN)
+	$(CMPDIR)/$(MAIN)
 
 .PHONY: test
-test: $(EXECDIR)/$(MAINTST)
-	$(EXECDIR)/$(MAINTST)
+test: $(CMPDIR)/$(MAINTST)
+	$(CMPDIR)/$(MAINTST)
 
 .PHONY: install
 install: $(CMPDIR)/$(MAIN) $(CMPDIR)/$(MAINTST) | $(EXECDIR)
@@ -86,7 +86,7 @@ $(DEPFILES):
 include $(wildcard $(DEPFILES))
 
 # Clean the place
-TRASH = build deps project test
+TRASH = build deps bin
 clean:
 	@echo "Cleaning the place..."
 	@for JUNK in $(TRASH); do \
